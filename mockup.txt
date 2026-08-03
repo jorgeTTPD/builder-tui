@@ -1,0 +1,8 @@
+┌─ Opciones de Usuario ──────────────────┐
+│ [X] Modo Oscuro                        │
+│ [ ] Notificaciones                     │
+│                                        │
+│  Nombre: [ Juan Perez_______________ ] │
+│                                        │
+│  [ Guardar ]       [ Cancelar ]        │
+└────────────────────────────────────────┘

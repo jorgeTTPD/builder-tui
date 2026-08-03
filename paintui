@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+"""paintui — editor de mockups TUI estilo nano/vim.
+
+Uso:
+    paintui                  # lienzo en blanco; al guardar pide nombre y ruta
+    paintui grafica.txt      # abre o crea grafica.txt en la carpeta actual
+    paintui ~/docs/plan.txt  # abre o crea el archivo en esa ruta
+    paintui --version        # muestra la versión
+
+El archivo se guarda donde invocas el comando (como nano/vim): si pasas
+solo un nombre, se crea en la carpeta actual; si pasas una ruta, en esa.
+"""
+
+import sys
+from pathlib import Path
+
+# Permite ejecutar el script desde cualquier carpeta sin instalar el paquete:
+# añade el directorio real del proyecto (resuelve symlinks) a sys.path.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from paint_ascii.__main__ import main  # noqa: E402
+
+if __name__ == "__main__":
+    sys.exit(main())

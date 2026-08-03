@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+*.tmp
+paint_ascii.egg-info/

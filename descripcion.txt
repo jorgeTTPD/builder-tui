@@ -1,0 +1,29 @@
+PAINT-ASCII - Editor de mockups TUI estilo nano
+================================================
+
+DESCRIPCION
+-----------
+Editor visual de mockups TUI en la terminal inspirado en nano.
+Permite dibujar cajas, lineas y texto libremente utilizando bordes
+de caracteres especiales, con atajos de teclado rapidos para guardar
+el resultado directamente en un archivo .txt plano. Ideal para usar
+como plantilla para prompts o disenos rapidos de interfaces de consola.
+
+TECNOLOGIA: Python + Textual
+PRIORIDAD: 1 (Python - Interfaces y editores visuales)
+
+FUNCIONALIDADES
+---------------
+[ ] Dibujar cajas con caracteres de bordes (┌─┐│└┘)
+[ ] Dibujar lineas y separadores (─ │ ═ ║)
+[ ] Texto libre con el teclado
+[ ] Navegacion con flechas y cursor visible
+[ ] Atajos rapidos: Ctrl+S guardar .txt, Ctrl+Q salir
+[ ] Paleta de caracteres / herramientas seleccionable
+[ ] Buffer de celdas de caracteres como lienzo
+[ ] Cargar y editar archivos .txt existentes
+
+PLANIFICADO / POR ANIADIR
+--------------------------
+[ ]
+[ ]
