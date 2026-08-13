@@ -5,6 +5,8 @@ Dibuja cajas, líneas y texto con caracteres de bordes y guarda el resultado
 en un archivo `.txt` plano. Incluye un motor **JPG → ASCII** para dibujar
 el mockup en un programa de pintura y convertirlo a texto.
 
+![paint-ascii](screenshot.png)
+
 ## Requisitos
 
 - Python 3.11+
