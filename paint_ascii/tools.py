@@ -17,9 +17,9 @@ class Tool:
 
     key: str = ""
     name: str = ""
-    # True si la herramienta captura texto imprimible (incluidos dígitos 1-5):
-    # con ella activa, las teclas 1-5 escriben caracteres en vez de cambiar
-    # de herramienta. Para cambiar de herramienta pulsa Esc (vuelve a [1]).
+
+
+
     consumes_text = False
 
     def hint(self) -> str:
@@ -131,8 +131,8 @@ class EscribirTool(Tool):
                 canvas.buffer.snapshot("erase")
                 canvas.buffer.delete_cell(canvas.cursor_x - 1, canvas.cursor_y)
                 canvas.cursor_x -= 1
-            # El cursor puede estar por debajo de la última fila; acotar antes
-            # de acceder a rows[cursor_y] (evita IndexError al borrar en vacío).
+
+
             elif 0 < canvas.cursor_y < len(canvas.buffer.rows):
                 canvas.buffer.snapshot("erase")
                 prev_len = len(canvas.buffer.rows[canvas.cursor_y - 1])
@@ -188,7 +188,7 @@ class BotonCheckTool(Tool):
             return True
         if event.key == "escape":
             self.label = ""
-            canvas.app.set_tool(1)  # vuelve a [1] Rectángulo para cambiar de herramienta
+            canvas.app.set_tool(1)
             return True
         return False
 

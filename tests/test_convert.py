@@ -59,7 +59,7 @@ class ConvertTests(unittest.TestCase):
         self.assertTrue(all(ch in "# " for line in lines for ch in line))
 
     def test_box_nested_boxes_make_t_junctions(self):
-        # Caja interior apoyada en el borde superior de la exterior: uniones T.
+
         img = Image.new("RGB", (200, 100), "white")
         draw = ImageDraw.Draw(img)
         draw.rectangle((20, 15, 180, 85), outline="black", width=3)
@@ -124,7 +124,7 @@ class ConvertTests(unittest.TestCase):
             path.unlink(missing_ok=True)
         for ch in "+-|":
             self.assertIn(ch, text)
-        # Los bordes deben verse limpios y abundantes.
+
         self.assertGreater(text.count("-"), 10)
         self.assertGreater(text.count("|"), 4)
 
@@ -132,8 +132,8 @@ class ConvertTests(unittest.TestCase):
         """Bordes ligeramente inclinados (dibujados a mano) también se detectan."""
         img = Image.new("RGB", (300, 150), "white")
         draw = ImageDraw.Draw(img)
-        # Rectángulo con el lateral DERECHO inclinado (x=253 arriba, x=247 abajo):
-        # simula un trazo manual que rompería los runs verticales contiguos.
+
+
         pts = [(40, 20), (253, 20), (247, 130), (40, 127)]
         draw.polygon(pts, outline="black", width=3)
         path = Path(__file__).parent / "_mockup_slanted.png"

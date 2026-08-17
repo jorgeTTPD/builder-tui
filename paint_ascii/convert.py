@@ -23,41 +23,41 @@ from pathlib import Path
 
 from PIL import Image, ImageEnhance, ImageOps
 
-# Rampas de claridad, de claro a oscuro.
+
 RAMP_CLASSIC = " .:-=+*#%@"
 RAMP_BLOCK = " ░▒▓█"
 
-# Bloques de cuadrantes 2x2: índice = bits (TL, TR, BL, BR).
+
 QUADS = {
     0b0000: " ",
-    0b0001: "▗",  # BR
-    0b0010: "▖",  # BL
-    0b0011: "▄",  # BL BR
-    0b0100: "▝",  # TR
-    0b0101: "▐",  # TR BR
-    0b0110: "▞",  # TR BL
-    0b0111: "▟",  # TR BL BR
-    0b1000: "▘",  # TL
-    0b1001: "▚",  # TL BR
-    0b1010: "▌",  # TL BL
-    0b1011: "▙",  # TL BL BR
-    0b1100: "▀",  # TL TR
-    0b1101: "▜",  # TL TR BR
-    0b1110: "▛",  # TL TR BL
+    0b0001: "▗",
+    0b0010: "▖",
+    0b0011: "▄",
+    0b0100: "▝",
+    0b0101: "▐",
+    0b0110: "▞",
+    0b0111: "▟",
+    0b1000: "▘",
+    0b1001: "▚",
+    0b1010: "▌",
+    0b1011: "▙",
+    0b1100: "▀",
+    0b1101: "▜",
+    0b1110: "▛",
     0b1111: "█",
 }
 
 MODES = ("classic", "block", "binary", "quad", "box", "mockup")
 
-# Idioma del OCR (instala tesseract-ocr-spa para mejor español).
+
 OCR_LANG = "eng"
 
-# Las celdas de terminal son ~2:1 (altas:anchas); las líneas de texto se
-# separan con este factor para que el resultado conserve la proporción.
+
+
 CHAR_ASPECT = 0.5
 
-# Por encima de este nº de píxeles se pre-reduce la imagen con LANCZOS para
-# que el "min-pool" (píxel más oscuro por celda) no tarde demasiado.
+
+
 _MAX_POOL_SOURCE = 4_000_000
 
 
@@ -79,7 +79,7 @@ def image_to_ascii(
     img = ImageOps.exif_transpose(img)
 
     if mode == "mockup":
-        # Recuadros + texto legible: necesita la imagen original para el OCR.
+
         return _render_mockup(
             img,
             width=width,
@@ -114,7 +114,7 @@ def image_to_ascii(
         )
 
     if mode == "quad":
-        # Cada carácter muestra 2x2 celdas muestreadas -> doble resolución.
+
         cols, rows = width * 2, height * 2
         grid = _min_pool(img, cols, rows)
         lines = []
@@ -134,7 +134,7 @@ def image_to_ascii(
             lines.append("".join(line))
         return "\n".join(lines)
 
-    # mode == "box": detección de líneas -> caracteres de caja.
+
     return _render_box_grid(img, width, height, threshold)
 
 
@@ -151,7 +151,7 @@ def _min_pool(img: Image.Image, cols: int, rows: int) -> list[list[int]]:
             Image.Resampling.LANCZOS,
         )
     src_w, src_h = img.size
-    data = img.tobytes()  # modo "L": 1 byte por píxel
+    data = img.tobytes()
     pooled = []
     for ty in range(rows):
         y0 = ty * src_h // rows
@@ -185,7 +185,7 @@ def _box_cell(grid: list[list[bool]], w: int, h: int, x: int, y: int) -> str:
 
     if not at(0, 0):
         return " "
-    # Relleno sólido: los 8 vecinos oscuros.
+
     if all(at(dx, dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1) if (dx, dy) != (0, 0)):
         return "█"
 
@@ -194,7 +194,7 @@ def _box_cell(grid: list[list[bool]], w: int, h: int, x: int, y: int) -> str:
 
     if n == 4:
         return "┼"
-    if n == 3:  # uniones en T (antes que los pares de eje)
+    if n == 3:
         if not left:
             return "┤"
         if not right:
@@ -206,7 +206,7 @@ def _box_cell(grid: list[list[bool]], w: int, h: int, x: int, y: int) -> str:
         return "─"
     if up and down:
         return "│"
-    if n == 2:  # esquinas
+    if n == 2:
         if right and down:
             return "┌"
         if left and down:
@@ -215,12 +215,12 @@ def _box_cell(grid: list[list[bool]], w: int, h: int, x: int, y: int) -> str:
             return "└"
         if left and up:
             return "┘"
-    if n == 1:  # extremos de línea
+    if n == 1:
         return "─" if (left or right) else "│"
-    return "▓"  # mancha sin forma clara
+    return "▓"
 
 
-# ------------------------------------------------------------- modo mockup
+
 
 
 def _render_mockup(
@@ -248,8 +248,8 @@ def _render_mockup(
     rects = _merge_rects(_find_rectangles(grid))
 
     canvas = [[" "] * width for _ in range(height)]
-    # Dibujar los rects más grandes primero: evita que bordes solapados
-    # pisen a los exteriores y generen ruido tipo "++" / "||".
+
+
     for x0, y0, x1, y1 in sorted(
         rects, key=lambda r: (r[2] - r[0]) * (r[3] - r[1]), reverse=True
     ):
@@ -261,7 +261,7 @@ def _render_mockup(
         _put_text(canvas, gx, gy, text)
 
     if not rects and not any(c.isalnum() for row in canvas for c in row):
-        # Sin recuadros ni texto detectable: caer al modo box.
+
         return _render_box_grid(img_gray, width, height, threshold)
     return "\n".join("".join(row).rstrip() for row in canvas)
 
@@ -349,7 +349,7 @@ def _merge_rects(rects: list[tuple[int, int, int, int]]) -> list[tuple[int, int,
     merged: list[tuple[int, int, int, int]] = []
     for x0, y0, x1, y1 in rects:
         if x1 - x0 < 3 or y1 - y0 < 2:
-            continue  # tira de línea suelta, no una caja
+            continue
         added = False
         for i, (a, b, c, d) in enumerate(merged):
             if abs(a - x0) <= 2 and abs(b - y0) <= 2 and abs(c - x1) <= 2 and abs(d - y1) <= 2:
@@ -371,7 +371,7 @@ def _draw_box(
     else:
         tl, tr, bl, br = "┌", "┐", "└", "┘"
         hch, vch = "─", "│"
-    # Primero dibujado gana: no pisar celdas ya ocupadas por otro borde.
+
     for x in range(x0, x1 + 1):
         if canvas[y0][x] == " ":
             canvas[y0][x] = hch if x0 < x < x1 else (tl if x == x0 else tr)
@@ -433,8 +433,8 @@ def _ocr_words(img: Image.Image, lang: str = OCR_LANG) -> list[tuple[int, int, i
     tesseract = shutil.which("tesseract")
     if not tesseract:
         return []
-    # Aplana la transparencia sobre fondo blanco (tesseract la ignora mal)
-    # y escala 2x si la imagen es pequeña: lee mejor a alta resolución.
+
+
     if img.mode in ("RGBA", "LA") or (img.mode == "P" and "transparency" in img.info):
         base = Image.new("RGBA", img.size, (255, 255, 255, 255))
         base.alpha_composite(img.convert("RGBA"))
@@ -457,7 +457,7 @@ def _ocr_words(img: Image.Image, lang: str = OCR_LANG) -> list[tuple[int, int, i
         return []
 
     words: list[tuple[int, int, int, int, str]] = []
-    for line in proc.stdout.splitlines()[1:]:  # saltar cabecera
+    for line in proc.stdout.splitlines()[1:]:
         parts = line.split("\t")
         if len(parts) < 12:
             continue
@@ -467,7 +467,7 @@ def _ocr_words(img: Image.Image, lang: str = OCR_LANG) -> list[tuple[int, int, i
         except ValueError:
             continue
         if not text or conf < 30 or not any(c.isalnum() for c in text):
-            continue  # ignorar bordes leídos como "|" / "-" y ruido
+            continue
         left, top = int(parts[6]) // scale, int(parts[7]) // scale
         w, h = int(parts[8]) // scale, int(parts[9]) // scale
         words.append((left, top, w, h, text))

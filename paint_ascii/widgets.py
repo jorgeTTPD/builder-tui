@@ -23,7 +23,7 @@ class TitleBar(Static):
         title = " paint-ascii v1.0 "
         info = f" Archivo: {filename} "
         marker = "●" if dirty else "○"
-        # ┌── + título + relleno + información + marcador + ──┐
+
         fixed = len("┌──") + len(title) + len(info) + 1 + len("──┐")
         fill = max(width - fixed, 0)
 
@@ -71,8 +71,8 @@ class Canvas(Widget, can_focus=True):
         super().__init__(*args, **kwargs)
         self.cursor_x = 0
         self.cursor_y = 0
-        # Desplazamiento manual del lienzo (no usar scroll_x/scroll_y:
-        # son reactivos de Textual y devuelven float).
+
+
         self.offset_x = 0
         self.offset_y = 0
 
@@ -84,7 +84,7 @@ class Canvas(Widget, can_focus=True):
     def tool(self):
         return self.app.tool
 
-    # ------------------------------------------------------------- movimiento
+
     def moved(self) -> None:
         """Llamado tras cambiar el cursor o editar: reposiciona y refresca."""
         self._ensure_visible()
@@ -108,7 +108,7 @@ class Canvas(Widget, can_focus=True):
         self.offset_x = max(0, min(self.offset_x, max_sx))
         self.offset_y = max(0, min(self.offset_y, max_sy))
 
-    # ------------------------------------------------------------- entrada
+
     def on_key(self, event) -> None:
         key = event.key
         if key == "up":
@@ -120,8 +120,8 @@ class Canvas(Widget, can_focus=True):
         elif key == "right":
             self.cursor_x += 1
         elif key in "12345" and not self.tool.consumes_text:
-            # Solo cambia de herramienta si la activa no captura texto:
-            # con Escribir/Botón activos, los dígitos se teclean (p. ej. «2FA»).
+
+
             self.app.set_tool(int(key))
             event.stop()
             return
@@ -129,11 +129,11 @@ class Canvas(Widget, can_focus=True):
             event.stop()
             return
         else:
-            # Teclas sin tratar: se propagan para que funcionen los bindings
-            # globales de la app (^S, ^Q, ^Z, ^Y, F1...)
+
+
             return
 
-        self.app.buffer.reset_group()  # el movimiento rompe los grupos de undo
+        self.app.buffer.reset_group()
         self.moved()
         event.stop()
 
@@ -158,7 +158,7 @@ class Canvas(Widget, can_focus=True):
         self.refresh()
         event.stop()
 
-    # ------------------------------------------------------------- render
+
     def render_line(self, y: int) -> Strip:
         row = y + self.offset_y
         width = self.size.width

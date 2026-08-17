@@ -20,7 +20,7 @@ async def _run(app: PaintAsciiApp, action) -> None:
 class TestApp(unittest.TestCase):
     def test_escribir_tool_typing(self) -> None:
         async def scenario(app, pilot):
-            await pilot.press("3")  # herramienta Escribir
+            await pilot.press("3")
             await pilot.press("h", "o", "l", "a")
             self.assertEqual(app.buffer.to_text(), "hola")
             canvas = app.query_one(Canvas)
@@ -65,10 +65,10 @@ class TestApp(unittest.TestCase):
     def test_rectangulo_tool(self) -> None:
         async def scenario(app, pilot):
             await pilot.press("1")
-            await pilot.press("enter")  # esquina 1 en (0,0)
-            await pilot.press("right", "right", "right")  # cursor a (3,0)
-            await pilot.press("down", "down")  # cursor a (3,2)
-            await pilot.press("enter")  # dibuja caja
+            await pilot.press("enter")
+            await pilot.press("right", "right", "right")
+            await pilot.press("down", "down")
+            await pilot.press("enter")
             self.assertEqual(app.buffer.to_text(), "┌──┐\n│  │\n└──┘")
             self.assertIsNone(app.tool.corner)
 
@@ -79,9 +79,9 @@ class TestApp(unittest.TestCase):
     def test_escape_cancels_rectangulo(self) -> None:
         async def scenario(app, pilot):
             await pilot.press("1")
-            await pilot.press("enter")  # esquina 1
+            await pilot.press("enter")
             await pilot.press("right", "right")
-            await pilot.press("escape")  # cancela
+            await pilot.press("escape")
             self.assertEqual(app.buffer.to_text(), "")
             self.assertIsNone(app.tool.corner)
 
@@ -92,10 +92,10 @@ class TestApp(unittest.TestCase):
     def test_texto_tool_plain_without_frame(self) -> None:
         async def scenario(app, pilot):
             await pilot.press("2")
-            await pilot.press("enter")  # abre el modal
+            await pilot.press("enter")
             await pilot.pause(0.05)
-            await pilot.press("H", "o", "l", "a")  # escribe en el input
-            await pilot.press("enter")  # confirma
+            await pilot.press("H", "o", "l", "a")
+            await pilot.press("enter")
             self.assertEqual(app.buffer.to_text(), "Hola")
 
         import asyncio
@@ -148,7 +148,7 @@ class TestApp(unittest.TestCase):
         async def scenario(app, pilot):
             await pilot.press("3")
             await pilot.press("a")
-            await pilot.press("down", "down", "down")  # cursor por debajo del buffer
+            await pilot.press("down", "down", "down")
             await pilot.press("backspace")
             self.assertEqual(app.buffer.to_text(), "a")
 
@@ -176,9 +176,9 @@ class TestApp(unittest.TestCase):
     def test_linea_tool(self) -> None:
         async def scenario(app, pilot):
             await pilot.press("5")
-            await pilot.press("enter")  # inicio (0,0)
-            await pilot.press("right", "right", "right", "right")  # a (4,0)
-            await pilot.press("enter")  # dibuja
+            await pilot.press("enter")
+            await pilot.press("right", "right", "right", "right")
+            await pilot.press("enter")
             self.assertEqual(app.buffer.to_text(), "─────")
 
         import asyncio
@@ -205,7 +205,7 @@ class TestApp(unittest.TestCase):
             await pilot.press("ctrl+s")
             await pilot.pause(0.05)
             self.assertIsInstance(app.screen, FilenameScreen)
-            await pilot.press("m", "i", "s", "u", "e", "n", "o", "s")  # escribe en el input
+            await pilot.press("m", "i", "s", "u", "e", "n", "o", "s")
             await pilot.press("enter")
             await pilot.pause(0.05)
             self.assertEqual(app.file_path.name, "misuenos.txt")
@@ -294,7 +294,7 @@ class TestApp(unittest.TestCase):
             await pilot.press("d", "o", "c", "s", "/", "p", "l", "a", "n")
             await pilot.press("enter")
             await pilot.pause(0.05)
-            # _normalize_name añade .txt cuando no hay extensión
+
             self.assertEqual(str(app.file_path), "docs/plan.txt")
             self.assertFalse(app.buffer.dirty)
 

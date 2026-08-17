@@ -74,7 +74,7 @@ class TestBuffer(unittest.TestCase):
         b = Buffer()
         b.snapshot("type")
         b.insert_char(0, 0, "h")
-        b.snapshot("type")  # mismo grupo: no crea nueva entrada
+        b.snapshot("type")
         b.insert_char(1, 0, "o")
         self.assertEqual(len(b._undo), 1)
 

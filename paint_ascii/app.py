@@ -46,16 +46,16 @@ class PaintAsciiApp(App[None]):
                 self.buffer = Buffer.load(self.file_path)
             except OSError as exc:
                 self._load_error = f"No se pudo abrir {self.file_path.name}: {exc}"
-        # Herramienta por defecto: [1] Rectángulo (no captura texto, así las
-        # teclas 1-5 siempre cambian de herramienta al arrancar).
+
+
         self.tool = RectanguloTool()
 
-    # ------------------------------------------------------------- propiedades
+
     @property
     def filename(self) -> str:
         return self.file_path.name if self.file_path else "sin nombre"
 
-    # ------------------------------------------------------------- composición
+
     def compose(self) -> ComposeResult:
         yield TitleBar()
         yield Canvas()
@@ -79,17 +79,17 @@ class PaintAsciiApp(App[None]):
             self.tool.hint(),
         )
 
-    # ------------------------------------------------------------- herramientas
+
     def set_tool(self, n: int) -> None:
         self.tool = TOOLS[n - 1]()
-        self.buffer.reset_group()  # cambiar de herramienta rompe los grupos de undo
+        self.buffer.reset_group()
         self.refresh_chrome()
         self.query_one(Canvas).refresh()
 
-    # ------------------------------------------------------------- acciones
+
     def action_undo(self) -> None:
         if self.buffer.undo():
-            # moved() recoloca el desplazamiento y refresca todo el chrome
+
             self.query_one(Canvas).moved()
         else:
             self.notify("Nada que deshacer")
@@ -147,7 +147,7 @@ class PaintAsciiApp(App[None]):
                     self.exit()
         elif choice == "discard":
             self.exit()
-        # "cancel": no hacer nada
+
 
     def _on_quit_filename(self, name: str | None) -> None:
         if not name:

@@ -94,8 +94,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.out:
         out_path = Path(args.out)
     else:
-        # Por defecto: mismo directorio y mismo nombre que la imagen.
-        # (stem evita el ValueError de with_suffix con nombres sin extensión)
+
+
         img_path = Path(args.imagen)
         out_path = img_path.parent / (img_path.stem + ".txt")
     try:

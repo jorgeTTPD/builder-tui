@@ -24,7 +24,7 @@ class Buffer:
         self._redo: list[list[str]] = []
         self._last_kind: str | None = None
 
-    # ---------------------------------------------------------------- geometría
+
     @property
     def width(self) -> int:
         return max((len(r) for r in self.rows), default=0)
@@ -41,7 +41,7 @@ class Buffer:
                 return row[x]
         return " "
 
-    # ---------------------------------------------------------------- mutación
+
     def _ensure(self, y: int, x: int) -> None:
         while len(self.rows) <= y:
             self.rows.append("")
@@ -74,7 +74,7 @@ class Buffer:
         row = self.rows[y]
         self.rows[y : y + 1] = [row[:x], row[x:]]
 
-    # ---------------------------------------------------------------- dibujo
+
     def box_cells(self, p1: tuple[int, int], p2: tuple[int, int]) -> dict[tuple[int, int], str]:
         """Celdas de borde de una caja entre dos esquinas (┌─┐│└┘)."""
         x1, x2 = sorted((p1[0], p2[0]))
@@ -121,7 +121,7 @@ class Buffer:
         for i, ch in enumerate(text):
             self.set_cell(x + i, y, ch)
 
-    # ---------------------------------------------------------------- undo/redo
+
     def snapshot(self, kind: str | None = None) -> None:
         """Guarda el estado actual antes de una mutación.
 
@@ -160,7 +160,7 @@ class Buffer:
         self.dirty = True
         return True
 
-    # ---------------------------------------------------------------- persistencia
+
     def to_text(self) -> str:
         return "\n".join(r.rstrip() for r in self.rows)
 

@@ -14,7 +14,7 @@ def main(argv: list[str] | None = None) -> None:
     if any(a in ("--version", "-V") for a in args):
         print(f"paint-ascii {__version__}")
         return
-    # La ruta se resuelve contra la carpeta donde se invoca (como nano/vim).
+
     path = Path(args[0]).expanduser() if args else None
     PaintAsciiApp(file_path=path).run()
 
