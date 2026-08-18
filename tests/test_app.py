@@ -1,4 +1,4 @@
-"""Tests de integración de la app con el pilot de Textual (headless)."""
+
 
 from __future__ import annotations
 
@@ -120,7 +120,7 @@ class TestApp(unittest.TestCase):
             self.assertEqual(app.buffer.to_text(), "[ ]")
 
     def test_escribir_tool_types_digits_without_switching(self) -> None:
-        """Con Escribir activo, los dígitos 1-5 se teclean, no cambian de herramienta."""
+        
         async def scenario(app, pilot):
             await pilot.press("3")
             await pilot.press("2", "F", "A")
@@ -132,7 +132,7 @@ class TestApp(unittest.TestCase):
         asyncio.run(_run(PaintAsciiApp(), scenario))
 
     def test_boton_label_with_digits(self) -> None:
-        """La etiqueta de Botón/Check admite dígitos sin cambiar de herramienta."""
+        
         async def scenario(app, pilot):
             await pilot.press("4")
             await pilot.press("G", "u", "a", "r", "d", "a", "r", "2")
@@ -144,7 +144,7 @@ class TestApp(unittest.TestCase):
         asyncio.run(_run(PaintAsciiApp(), scenario))
 
     def test_backspace_below_last_row_no_crash(self) -> None:
-        """Backspace con el cursor por debajo de la última fila no lanza IndexError."""
+        
         async def scenario(app, pilot):
             await pilot.press("3")
             await pilot.press("a")
@@ -157,7 +157,7 @@ class TestApp(unittest.TestCase):
         asyncio.run(_run(PaintAsciiApp(), scenario))
 
     def test_escape_in_escribir_returns_to_rectangulo(self) -> None:
-        """Esc en Escribir vuelve a [1] Rectángulo (permite cambiar de herramienta)."""
+        
         async def scenario(app, pilot):
             from paint_ascii.tools import RectanguloTool
 
@@ -284,7 +284,7 @@ class TestApp(unittest.TestCase):
             asyncio.run(_run(PaintAsciiApp(file_path=path), scenario))
 
     def test_save_with_full_path_creates_subdirs(self) -> None:
-        """Al guardar con una ruta con subcarpetas, se crean los directorios."""
+        
         async def scenario(app, pilot):
             await pilot.press("3")
             await pilot.press("x", "y")

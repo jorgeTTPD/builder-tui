@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""Convierte una imagen (JPG, PNG, BMP...) a texto ASCII.
 
-Por defecto guarda el resultado en la misma carpeta que la imagen,
-con el mismo nombre y extensión .txt. Usa --print para verlo en consola.
 
-Ejemplos:
-    python jpg2ascii.py mockup.jpg              # guarda mockup.txt al lado
-    python jpg2ascii.py mockup.jpg -w 100 -o salida.txt
-    python jpg2ascii.py mockup.jpg --print      # imprime en consola
-    python jpg2ascii.py mockup.jpg -m box -w 90 # caracteres de caja
-    python jpg2ascii.py mockup.jpg -m quad -i   # bloques 2x2 invertido
-"""
+
+
+
+
+
+
+
+
+
+
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Pantallas modales: confirmación de salida, nombre de archivo, caja de texto y ayuda."""
+
 
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ ATAJOS
 
 
 class _Dialog(Vertical):
-    """Contenedor común de los diálogos modales."""
+    
 
     DEFAULT_CSS = """
     _Dialog {
@@ -50,7 +50,7 @@ class _Dialog(Vertical):
 
 
 class ConfirmQuitScreen(ModalScreen[str]):
-    """Pregunta qué hacer con los cambios sin guardar (estilo nano)."""
+    
 
     BINDINGS = [Binding("escape", "cancel", "Cancelar")]
 
@@ -74,13 +74,13 @@ class ConfirmQuitScreen(ModalScreen[str]):
 
 
 class FilenameScreen(ModalScreen[str | None]):
-    """Pide nombre y ruta del archivo al guardar por primera vez.
+    
 
-    - Solo un nombre (p. ej. `plan.txt`) guarda en la carpeta actual
-      (la misma donde se invocó paintui, como nano/vim).
-    - Una ruta completa (p. ej. `~/docs/plan.txt`) guarda ahí, creando
-      las subcarpetas si hace falta.
-    """
+
+
+
+
+
 
     BINDINGS = [Binding("escape", "cancel", "Cancelar")]
 
@@ -120,7 +120,7 @@ class FilenameScreen(ModalScreen[str | None]):
 
 
 class TextBoxScreen(ModalScreen[str | None]):
-    """Pide el texto a colocar en el lienzo (herramienta Texto)."""
+    
 
     BINDINGS = [Binding("escape", "cancel", "Cancelar")]
 
@@ -149,7 +149,7 @@ class TextBoxScreen(ModalScreen[str | None]):
 
 
 class HelpScreen(ModalScreen[None]):
-    """Pantalla de ayuda con atajos y herramientas."""
+    
 
     BINDINGS = [
         Binding("escape", "close", "Cerrar"),

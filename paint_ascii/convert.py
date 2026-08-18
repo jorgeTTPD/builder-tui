@@ -1,18 +1,18 @@
-"""Motor de conversión de imágenes a texto ASCII (JPG/PNG -> texto).
 
-Flujo de trabajo recomendado (mockup en paint -> ASCII):
-    1. Dibuja el mockup en Pinta/KolourPaint y guárdalo como JPG (o PNG).
-    2. Convierte:  python jpg2ascii.py mockup.jpg -w 100 -m quad -o mockup.txt
-    3. Retoca:     python -m paint_ascii mockup.txt
 
-Modos:
-    classic  Rampa clásica de brillo  " .:-=+*#%@"  (fotos y cualquier imagen)
-    block    Bloques de relleno       " ░▒▓█"       (sombras y degradados)
-    binary   Alto contraste           "#" / espacio
-    quad     Bloques 2x2              (máxima fidelidad; buen texto)
-    box      Caracteres de caja       ─│┌┐└┘┼       (mockups con recuadros)
-    mockup   Recuadros + texto OCR    ┌─┐│└┘ + texto (copia casi exacta)
-"""
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 from __future__ import annotations
 
@@ -71,7 +71,7 @@ def image_to_ascii(
     lang: str = OCR_LANG,
     ascii_style: bool = True,
 ) -> str:
-    """Convierte una imagen a texto ASCII y devuelve las líneas con \\n."""
+    
     if mode not in MODES:
         raise ValueError(f"modo desconocido: {mode!r} (válidos: {', '.join(MODES)})")
 
@@ -139,11 +139,11 @@ def image_to_ascii(
 
 
 def _min_pool(img: Image.Image, cols: int, rows: int) -> list[list[int]]:
-    """Reduce la imagen a cols×rows tomando el píxel más oscuro de cada celda.
+    
 
-    Conserva líneas finas (1 px) que un promedio diluiría: sirve para
-    convertir mockups dibujados con trazos finos.
-    """
+
+
+
     if img.width * img.height > _MAX_POOL_SOURCE:
         ratio = (_MAX_POOL_SOURCE / (img.width * img.height)) ** 0.5
         img = img.resize(
@@ -177,7 +177,7 @@ def _min_pool(img: Image.Image, cols: int, rows: int) -> list[list[int]]:
 
 
 def _box_cell(grid: list[list[bool]], w: int, h: int, x: int, y: int) -> str:
-    """Clasifica una celda oscura como línea, esquina, cruce o relleno."""
+    
 
     def at(dx: int, dy: int) -> bool:
         nx, ny = x + dx, y + dy
@@ -231,13 +231,13 @@ def _render_mockup(
     lang: str = OCR_LANG,
     ascii_style: bool = True,
 ) -> str:
-    """Modo mockup: recuadros limpios + texto legible vía OCR.
+    
 
-    Detecta los bordes de las cajas en la cuadrícula binarizada y los dibuja
-    con caracteres de caja (ASCII +-| por defecto, Unicode ┌─┐ con
-    ascii_style=False), y coloca el texto leído por tesseract agrupado en
-    líneas compactas en su posición original. Requiere `tesseract` instalado.
-    """
+
+
+
+
+
     img_gray = img.convert("L")
     if invert:
         img_gray = ImageOps.invert(img_gray)
@@ -267,7 +267,7 @@ def _render_mockup(
 
 
 def _render_box_grid(img: Image.Image, width: int, height: int, threshold: int) -> str:
-    """Renderiza la cuadrícula con el clasificador de celdas (modo box)."""
+    
     grid = [[v < threshold for v in row] for row in _min_pool(img, width, height)]
     return "\n".join(
         "".join(_box_cell(grid, width, height, x, y) for x in range(width)).rstrip()
@@ -276,7 +276,7 @@ def _render_box_grid(img: Image.Image, width: int, height: int, threshold: int) 
 
 
 def _find_horizontal_lines(grid: list[list[bool]], min_len: int) -> list[tuple[int, int, int]]:
-    """Segmentos horizontales: (y, x0, x1) con longitud >= min_len."""
+    
     h, w = len(grid), len(grid[0])
     lines = []
     for y in range(h):
@@ -296,13 +296,13 @@ def _find_horizontal_lines(grid: list[list[bool]], min_len: int) -> list[tuple[i
 
 
 def _find_rectangles(grid: list[list[bool]]) -> list[tuple[int, int, int, int]]:
-    """Detecta recuadros (bordes de caja) en la cuadrícula binaria.
+    
 
-    Empareja un borde superior e inferior horizontales y comprueba que los
-    lados izquierdo y derecho estén mayormente oscuros entre ambos, con
-    tolerancia para bordes inclinados o antialias (los dibujados a mano en
-    Pinta suelen estar ligeramente torcidos). Devuelve (x0, y0, x1, y1).
-    """
+
+
+
+
+
     h, w = len(grid), len(grid[0])
     h_min = max(2, int(w * 0.05))
     h_lines = _find_horizontal_lines(grid, h_min)
@@ -326,12 +326,12 @@ def _find_rectangles(grid: list[list[bool]]) -> list[tuple[int, int, int, int]]:
 def _side_solid(
     grid: list[list[bool]], x: int, y_top: int, y_bot: int, tol: int = 1, ratio: float = 0.75
 ) -> bool:
-    """True si la columna x (con tolerancia) está mayormente oscura en el tramo.
+    
 
-    En vez de exigir una línea vertical contigua (frágil con bordes
-    inclinados), cuenta cuántas filas del tramo tienen píxel oscuro cerca
-    de x y exige una cobertura >= ratio.
-    """
+
+
+
+
     n = y_bot - y_top + 1
     best = 0
     for dx in range(-tol, tol + 1):
@@ -344,8 +344,8 @@ def _side_solid(
 
 
 def _merge_rects(rects: list[tuple[int, int, int, int]]) -> list[tuple[int, int, int, int]]:
-    """Une recuadros casi idénticos (p. ej. bordes de 2 celdas de grosor) y
-    descarta los demasiado delgados (ruido de líneas sueltas)."""
+    
+
     merged: list[tuple[int, int, int, int]] = []
     for x0, y0, x1, y1 in rects:
         if x1 - x0 < 3 or y1 - y0 < 2:
@@ -364,7 +364,7 @@ def _merge_rects(rects: list[tuple[int, int, int, int]]) -> list[tuple[int, int,
 def _draw_box(
     canvas: list[list[str]], x0: int, y0: int, x1: int, y1: int, ascii_style: bool = True
 ) -> None:
-    """Dibuja un recuadro: ASCII (+-|) por defecto o Unicode (┌─┐│└┘)."""
+    
     if ascii_style:
         tl = tr = bl = br = "+"
         hch, vch = "-", "|"
@@ -387,11 +387,11 @@ def _draw_box(
 def _group_words_into_lines(
     words: list[tuple[int, int, int, int, str]],
 ) -> list[tuple[int, int, str]]:
-    """Agrupa palabras del OCR en líneas (mismo top aprox) y las une con espacios.
+    
 
-    Devuelve [(left, top, texto)] por línea: el texto queda compacto
-    ("lady gaga reina") en vez de esparcido por los bounding boxes.
-    """
+
+
+
     if not words:
         return []
     heights = [w[3] for w in words]
@@ -415,7 +415,7 @@ def _group_words_into_lines(
 
 
 def _put_text(canvas: list[list[str]], gx: int, gy: int, text: str) -> None:
-    """Coloca texto en el lienzo sin pisar los bordes ya dibujados."""
+    
     if gy < 0 or gy >= len(canvas):
         return
     for i, ch in enumerate(text):
@@ -425,11 +425,11 @@ def _put_text(canvas: list[list[str]], gx: int, gy: int, text: str) -> None:
 
 
 def _ocr_words(img: Image.Image, lang: str = OCR_LANG) -> list[tuple[int, int, int, int, str]]:
-    """OCR con tesseract: devuelve [(left, top, width, height, texto)].
+    
 
-    Usa la salida TSV para obtener la posición de cada palabra. Si tesseract
-    no está instalado, devuelve lista vacía (el modo mockup solo dibuja cajas).
-    """
+
+
+
     tesseract = shutil.which("tesseract")
     if not tesseract:
         return []

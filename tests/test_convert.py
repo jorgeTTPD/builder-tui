@@ -1,4 +1,4 @@
-"""Tests del motor JPG -> ASCII (paint_ascii.convert)."""
+
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ TMP = Path(__file__).parent / "_mockup_test.png"
 
 
 def _make_mockup(path: Path = TMP, with_box: bool = True) -> Path:
-    """Genera una imagen de prueba: fondo blanco + caja negra + texto."""
+    
     img = Image.new("RGB", (200, 100), "white")
     draw = ImageDraw.Draw(img)
     if with_box:
@@ -93,7 +93,7 @@ class ConvertTests(unittest.TestCase):
 
     @unittest.skipUnless(shutil.which("tesseract"), "tesseract no instalado")
     def test_mockup_places_ocr_text(self):
-        """End-to-end: el texto de la imagen aparece legible en la salida."""
+        
         img = Image.new("RGB", (300, 100), "white")
         draw = ImageDraw.Draw(img)
         try:
@@ -111,7 +111,7 @@ class ConvertTests(unittest.TestCase):
         self.assertIn("mundo", text)
 
     def test_mockup_draws_clean_boxes(self):
-        """El modo mockup dibuja recuadros limpios (ASCII +-| por defecto)."""
+        
         img = Image.new("RGB", (300, 150), "white")
         draw = ImageDraw.Draw(img)
         draw.rectangle((30, 20, 270, 130), outline="black", width=3)
@@ -129,7 +129,7 @@ class ConvertTests(unittest.TestCase):
         self.assertGreater(text.count("|"), 4)
 
     def test_mockup_slanted_boxes(self):
-        """Bordes ligeramente inclinados (dibujados a mano) también se detectan."""
+        
         img = Image.new("RGB", (300, 150), "white")
         draw = ImageDraw.Draw(img)
 
@@ -147,7 +147,7 @@ class ConvertTests(unittest.TestCase):
         self.assertGreater(text.count("-"), 10)
 
     def test_mockup_unicode_style(self):
-        """Con ascii_style=False el modo mockup usa caracteres Unicode."""
+        
         img = Image.new("RGB", (300, 150), "white")
         draw = ImageDraw.Draw(img)
         draw.rectangle((30, 20, 270, 130), outline="black", width=3)
@@ -161,7 +161,7 @@ class ConvertTests(unittest.TestCase):
             self.assertIn(ch, text)
 
     def test_cli_saves_txt_next_to_image(self):
-        """Sin -o, la CLI guarda el .txt en la misma carpeta que la imagen."""
+        
         tmpdir = Path(tempfile.mkdtemp(prefix="jpg2ascii_"))
         try:
             img = tmpdir / "mockup.png"
@@ -175,7 +175,7 @@ class ConvertTests(unittest.TestCase):
             shutil.rmtree(tmpdir, ignore_errors=True)
 
     def test_cli_stdout_with_print_flag(self):
-        """Con --print, imprime en consola y no crea archivo."""
+        
         tmpdir = Path(tempfile.mkdtemp(prefix="jpg2ascii_print_"))
         try:
             img = tmpdir / "mockup.png"
@@ -190,7 +190,7 @@ class ConvertTests(unittest.TestCase):
             shutil.rmtree(tmpdir, ignore_errors=True)
 
     def test_cli_no_suffix_image_name(self):
-        """Nombres de imagen sin extensión no deben romper la ruta de salida."""
+        
         tmpdir = Path(tempfile.mkdtemp(prefix="jpg2ascii_nosuffix_"))
         try:
             img = tmpdir / "prueba"

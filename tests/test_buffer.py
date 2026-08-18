@@ -1,4 +1,4 @@
-"""Tests unitarios del modelo Buffer."""
+
 
 from __future__ import annotations
 
@@ -116,7 +116,7 @@ class TestBuffer(unittest.TestCase):
             self.assertEqual(path.read_text(encoding="utf-8"), "abc\n")
 
     def test_save_creates_missing_parent_dirs(self) -> None:
-        """Guardar en una ruta con subcarpetas inexistentes crea los directorios."""
+        
         b = Buffer(["hola"])
         with tempfile.TemporaryDirectory() as td:
             path = Path(td) / "docs" / "sub" / "plan.txt"

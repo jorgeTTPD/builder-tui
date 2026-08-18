@@ -1,4 +1,4 @@
-"""Widgets de la interfaz: cabecera, lienzo, barra de herramientas y estado."""
+
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from .tools import TOOLS
 
 
 class TitleBar(Static):
-    """Cabecera superior estilo nano: ┌── paint-ascii v1.0 ── Archivo: mockup.txt ──┐"""
+    
 
     def set_state(self, filename: str, dirty: bool) -> None:
         width = max(self.size.width, 30)
@@ -38,7 +38,7 @@ class TitleBar(Static):
 
 
 class Toolbar(Static):
-    """Barra de herramientas inferior (estilo del mockup)."""
+    
 
     def set_active(self, active_key: str) -> None:
         text = Text()
@@ -53,7 +53,7 @@ class Toolbar(Static):
 
 
 class StatusBar(Static):
-    """Línea de estado: posición del cursor, dirty y pista de la herramienta."""
+    
 
     def set_state(self, x: int, y: int, dirty: bool, hint: str) -> None:
         text = Text()
@@ -65,7 +65,7 @@ class StatusBar(Static):
 
 
 class Canvas(Widget, can_focus=True):
-    """Lienzo de celdas con desplazamiento manual y cursor visible."""
+    
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -86,7 +86,7 @@ class Canvas(Widget, can_focus=True):
 
 
     def moved(self) -> None:
-        """Llamado tras cambiar el cursor o editar: reposiciona y refresca."""
+        
         self._ensure_visible()
         self.refresh()
         self.app.refresh_chrome()

@@ -1,4 +1,4 @@
-"""Punto de entrada: python -m paint_ascii [archivo.txt] / paintui [archivo.txt]"""
+
 
 from __future__ import annotations
 

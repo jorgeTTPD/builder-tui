@@ -1,9 +1,9 @@
-"""Modelo de datos: lienzo de celdas de caracteres.
 
-El buffer es una lista de filas (cadenas de texto); cada celda es un
-carácter. Las celdas fuera de los límites se leen como espacios.
-Incluye historial de deshacer/rehacer y guardado atómico a .txt.
-"""
+
+
+
+
+
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ MAX_UNDO = 200
 
 
 class Buffer:
-    """Lienzo de caracteres con operaciones de dibujo y deshacer."""
+    
 
     def __init__(self, rows: list[str] | None = None) -> None:
         self.rows: list[str] = list(rows) if rows else []
@@ -34,7 +34,7 @@ class Buffer:
         return len(self.rows)
 
     def cell(self, x: int, y: int) -> str:
-        """Carácter en (x, y); espacio si está fuera de los límites."""
+        
         if 0 <= y < len(self.rows):
             row = self.rows[y]
             if 0 <= x < len(row):
@@ -49,7 +49,7 @@ class Buffer:
             self.rows[y] = self.rows[y].ljust(x)
 
     def set_cell(self, x: int, y: int, ch: str) -> None:
-        """Fija un carácter en una celda, ampliando el lienzo si hace falta."""
+        
         self._ensure(y, x)
         row = self.rows[y]
         if x >= len(row):
@@ -69,14 +69,14 @@ class Buffer:
                 self.rows[y] = row[:x] + row[x + 1 :]
 
     def split_row(self, x: int, y: int) -> None:
-        """Divide la fila y en dos a la altura de la columna x (tecla Enter)."""
+        
         self._ensure(y, x)
         row = self.rows[y]
         self.rows[y : y + 1] = [row[:x], row[x:]]
 
 
     def box_cells(self, p1: tuple[int, int], p2: tuple[int, int]) -> dict[tuple[int, int], str]:
-        """Celdas de borde de una caja entre dos esquinas (┌─┐│└┘)."""
+        
         x1, x2 = sorted((p1[0], p2[0]))
         y1, y2 = sorted((p1[1], p2[1]))
         cells: dict[tuple[int, int], str] = {}
@@ -99,7 +99,7 @@ class Buffer:
     def line_cells(
         self, p1: tuple[int, int], p2: tuple[int, int], thick: bool = False
     ) -> dict[tuple[int, int], str]:
-        """Línea recta horizontal/vertical entre dos puntos (─│ o ═║)."""
+        
         h, v = ("═", "║") if thick else ("─", "│")
         x1, y1 = p1
         x2, y2 = p2
@@ -117,17 +117,17 @@ class Buffer:
             self.set_cell(x, y, ch)
 
     def write_text(self, x: int, y: int, text: str) -> None:
-        """Escribe texto plano en el lienzo a partir de (x, y), sin marco."""
+        
         for i, ch in enumerate(text):
             self.set_cell(x + i, y, ch)
 
 
     def snapshot(self, kind: str | None = None) -> None:
-        """Guarda el estado actual antes de una mutación.
+        
 
-        Con el mismo ``kind`` consecutivo no se crea una entrada nueva
-        (agrupa escritura continua en un solo paso de deshacer).
-        """
+
+
+
         if kind is not None and kind == self._last_kind:
             self.dirty = True
             return
@@ -139,7 +139,7 @@ class Buffer:
         self._last_kind = kind
 
     def reset_group(self) -> None:
-        """Rompe el grupo de deshacer (p. ej. al mover el cursor)."""
+        
         self._last_kind = None
 
     def undo(self) -> bool:
@@ -174,10 +174,10 @@ class Buffer:
         return cls(rows)
 
     def save(self, path: Path | str) -> None:
-        """Guardado atómico: escribe a un temporal y luego reemplaza.
+        
 
-        Crea el directorio padre si no existe (soporta rutas con subcarpetas).
-        """
+
+
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
         text = self.to_text()

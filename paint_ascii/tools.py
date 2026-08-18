@@ -1,8 +1,8 @@
-"""Sistema de herramientas (patrón estrategia).
 
-Cada herramienta recibe el lienzo (Canvas) y los eventos de teclado y
-decide qué hacer. Las que dibujan exponen una ``preview`` en vivo.
-"""
+
+
+
+
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class Tool:
-    """Base de todas las herramientas."""
+    
 
     key: str = ""
     name: str = ""
@@ -26,11 +26,11 @@ class Tool:
         return ""
 
     def handle_key(self, canvas: "Canvas", event: Any) -> bool:
-        """Procesa una tecla. Devuelve True si la consumió."""
+        
         return False
 
     def preview(self, canvas: "Canvas") -> dict[tuple[int, int], str] | None:
-        """Celdas a mostrar en vista previa, o None si no hay."""
+        
         return None
 
 
@@ -86,7 +86,7 @@ class TextoTool(Tool):
         return False
 
     def _place_text(self, text: str | None) -> None:
-        """Callback del modal: coloca el texto plano en el cursor, sin marco."""
+        
         canvas = self._canvas
         if canvas is None:
             return
@@ -106,7 +106,7 @@ class EscribirTool(Tool):
         return "Escribe texto · Enter salto · Backspace borra · Esc vuelve a [1]"
 
     def _back_to_rectangulo(self, canvas: "Canvas") -> None:
-        """Esc: vuelve a la herramienta Rectángulo (para poder cambiar con 1-5)."""
+        
         canvas.app.set_tool(1)
 
     def handle_key(self, canvas: "Canvas", event: Any) -> bool:
