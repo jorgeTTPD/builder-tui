@@ -1,4 +1,3 @@
-"""Aplicación principal paint-ascii (Python + Textual)."""
 
 from __future__ import annotations
 
@@ -14,7 +13,7 @@ from .widgets import Canvas, StatusBar, TitleBar, Toolbar
 
 
 class PaintAsciiApp(App[None]):
-    """Editor de mockups TUI inspirado en nano."""
+    
 
     TITLE = "paint-ascii v1.0"
     SUB_TITLE = "Editor de mockups TUI estilo nano"
